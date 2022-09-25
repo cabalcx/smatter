@@ -8,8 +8,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--sites', type=str, default='8kun,4chan,gab,parler,win,poal,telegram,kiwifarms,gettr,wimkin,mewe,minds,vk,truth_social', required=False)
 parser.add_argument('--terms', type=str, default='qanon,heil', required=False)
 #parser.add_argument('--fileType', type=str, default='json', required=False)
-parser.add_argument('--filetype', type=str, default='norm-csv', required=False)
-parser.add_argument('--count', type=str, default=100, required=False)
+parser.add_argument('--filetype', type=str, default='wide-csv', required=False)
 
 #TODO add range args 
 args = parser.parse_args()
