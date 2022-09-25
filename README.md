@@ -1,6 +1,13 @@
 # smatter
 API wrapper and python client for the SMAT API
 
+## Installing smatter
+
+If you're developing, you may install the package in your local directly like so:
+```
+pip install -e .
+```
+
 ## Using smatter
 Currently, smatter is a command line client. It can be run using the default settings following command from the project directory
 ```
