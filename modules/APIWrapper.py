@@ -38,38 +38,34 @@ class ApiWrapper:
         #Should always be smat but might as well let people change it
         self.domain = 'https://api.smat-app.com/' 
         #TODO Throw error if invalid path enum (content, timeseries, activity) 
+        self.set_path(path)
+
+    #TODO Add validation logic
+    def set_path(self, path):
+        #TODO Alert that this resets params
         self.path = path
+
         #Maybe shouldn't have defaults?
         #todo change to switch once I bother to update to python 3.10
         if path == 'content':
                 #TODO dynamic default dates
                 self.params = {
                     'term': 'qanon',
-                    'limit': 10,
+                    'limit': 100,
                     'site': 'win',
                     'since': '2022-07-23T05:58:30.252063',
                     'until': '2022-09-23T05:58:30.252063',
                     'esquery': 'false',
                     'sortdesc': 'true'
                 }
-            #case _:
-                #throw an error?
-
-    #TODO Add validation logic
-    def set_path(self, path):
-        #TODO Alert that this resets params
-        self.path = path
-        #todo change to switch once I bother to update to python 3.10
-        if path == 'content':
+        elif(path == 'activity'):
                 #TODO dynamic default dates
                 self.params = {
                     'term': 'qanon',
-                    'limit': 10,
                     'site': 'win',
                     'since': '2022-07-23T05:58:30.252063',
                     'until': '2022-09-23T05:58:30.252063',
                     'esquery': 'false',
-                    'sortdesc': 'true'
                 }
         
     def set_site(self, site):
@@ -83,6 +79,19 @@ class ApiWrapper:
             self.params['term'] = term
         else:
             raise ValueError("Empty strings may not be searched")
+
+
+    def set_limit(self, limit):
+        if self.path == 'content':
+            #todo a better limit? this one is arbitray
+            if(limit <= 1000):
+                self.params['limit'] = limit
+            else:
+                self.params['limit'] = 1000
+                print("WARNING - Limit maxes at 1000, falling please narrow your search window or youtre results will be truncated")
+        else:
+            raise ValueError("limit is only valid for content")
+
 
     def get_valid_sites(self):
         return validSites
