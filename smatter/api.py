@@ -140,7 +140,7 @@ class SMAT:
                     return pd.json_normalize(response.json()['aggregations']['timestamp']['buckets'])
                 except:
                     try:
-                        return pd.json_normalize(response.json()['aggregations']['key_as_string']['buckets'])
+                        return pd.json_normalize(response.json()['aggregations']['createdAtformatted']['buckets'])
                     except:
                         try:
                             return pd.json_normalize(response.json()['aggregations']['published_at']['buckets'])
