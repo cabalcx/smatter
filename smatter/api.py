@@ -15,6 +15,9 @@ class SMAT:
         # set class base url
         self.BASE_URL = SMAT_API_BASE_URL
 
+        # set in-scope sites
+        self.SMAT_SITES = SMAT_TARGET_SITES
+
         # set api endpoints
         self.ENDPOINT_CONTENT = SMAT_API_ENDPOINT_CONTENT
         self.ENDPOINT_TIMESERIES = SMAT_API_ENDPOINT_TIMESERIES
