@@ -12,11 +12,11 @@ setup(
     description='API wrapper and python client for the SMAT API.',
     author='cabalcx',
     packages=['smatter'],
-    package_data={'vxdb': ['py.typed']},
+    package_data={},
     url='https://github.com/cabalcx/smatter',
     python_requires='>=3.7',
     install_requires=['requests','pandas'],
     extras_require={},
-    entry_points={'console_scripts': ['vxdb = vxdb.cli:main [cli]']},
+    entry_points={},
     classifiers=[]
 )
