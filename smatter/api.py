@@ -202,7 +202,10 @@ class SMAT:
                         try:
                             return pd.json_normalize(response.json()['aggregations']['user']['buckets'])
                         except:
-                            return
+                            try:
+                                return pd.json_normalize(response.json()['aggregations']['uid']['buckets'])
+                            except:
+                                return
     
     #TODO Add validation logic
     def set_path(self, path):
