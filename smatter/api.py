@@ -1,4 +1,5 @@
 from smatter.utils import *
+import pandas as pd
 
 #TODO Add each path (currently content, timeseries, activity) as a child class, something like
 # class contentPathApiWrapper(ApiWrapper):
@@ -51,7 +52,8 @@ class SMAT:
             since: str = '2021-01-01T00:00:00.000000',
             until: str = '2022-01-01T00:00:00.000000',
             esquery: bool = False,
-            sortdesc: bool = False
+            sortdesc: bool = False,
+            output: str = 'raw'
         ):
         """
         SMAT Content: Get the post content for a given query on a given site.
@@ -63,6 +65,7 @@ class SMAT:
         until: Datetime ending point for the query. Default = "2022-01-01T00:00:00.000000"
         esquery: Default = False. ??? TODO
         sortdesc: Order to present results, oldest->newest or newest->oldest. Default = False.
+        output: What output would you like, dict (raw), dataframe, or json? Default = raw dict from the SMAT API response.
         """
         params = {
             'term': term,
@@ -77,7 +80,13 @@ class SMAT:
             target_url=self.SMAT_CONTENT_TARGET_URL,
             params=params
         )
-        return response.json()
+        output = output.lower()
+        if output == 'raw' or output =='dict':
+            return response.json()
+        if output == 'rawjson' or output == 'json':
+            return json.dumps(response.json())
+        if output == 'dataframe' or output == 'df':
+            return pd.json_normalize(response.json()['hits']['hits'])
 
     def timeseries(
             self,
@@ -88,7 +97,8 @@ class SMAT:
             until: str = '2022-01-01T00:00:00.000000',
             changepoint: bool = False,
             esquery: bool = False,
-            sortdesc: bool = False
+            sortdesc: bool = False,
+            output: bool = 'raw'
         ):
         """
         SMAT Timeseries: Simple volume aggregation over time for a given query on a given site.
@@ -101,6 +111,7 @@ class SMAT:
         changepoint: Default = False. ??? TODO 
         esquery: Default = False. ??? TODO
         sortdesc: Order to present results, oldest->newest or newest->oldest. Default = False.
+        output: What output would you like, dict (raw), dataframe, or json? Default = raw dict from the SMAT API response.
         """
         params = {
             'term': term,
@@ -116,7 +127,26 @@ class SMAT:
             target_url=self.SMAT_TIMESERIES_TARGET_URL,
             params=params
         )
-        return response.json()
+        output = output.lower()
+        if output == 'raw' or output =='dict':
+            return response.json()
+        if output == 'rawjson' or output == 'json':
+            return json.dumps(response.json())
+        if output == 'dataframe' or output == 'df':
+            try:
+                return pd.json_normalize(response.json()['aggregations']['time']['buckets'])
+            except:
+                try:
+                    return pd.json_normalize(response.json()['aggregations']['timestamp']['buckets'])
+                except:
+                    try:
+                        return pd.json_normalize(response.json()['aggregations']['created_at']['buckets'])
+                    except:
+                        try:
+                            return pd.json_normalize(response.json()['aggregations']['published_at']['buckets'])
+                        except:
+                            return
+                
 
     def activity(
             self,
@@ -126,7 +156,8 @@ class SMAT:
             since: str = '2021-01-01T00:00:00.000000',
             until: str = '2022-01-01T00:00:00.000000',
             changepoint: bool = False,
-            esquery: bool = False
+            esquery: bool = False,
+            output: str = 'raw'
         ):
         """
         SMAT ACTIVITY: Get the user activity for a given query on a given site.
@@ -138,6 +169,7 @@ class SMAT:
         until: Datetime ending point for the query. Default = "2022-01-01T00:00:00.000000"
         changepoint: Default = False. ??? TODO 
         esquery: Default = False. ??? TODO
+        output: What output would you like, dict (raw), dataframe, or json? Default = raw dict from the SMAT API response.
         """
         params = {
             'term': term,
@@ -152,10 +184,26 @@ class SMAT:
             target_url=self.SMAT_ACTIVITY_TARGET_URL,
             params=params
         )
-        return response.json()
+        output = output.lower()
+        if output == 'raw' or output =='dict':
+            return response.json()
+        if output == 'rawjson' or output == 'json':
+            return json.dumps(response.json())
+        if output == 'dataframe' or output == 'df':
+            try:
+                return pd.json_normalize(response.json()['aggregations']['name']['buckets'])
+            except:
+                try:
+                    return pd.json_normalize(response.json()['aggregations']['username']['buckets'])
+                except:
+                    try:
+                        return pd.json_normalize(response.json()['aggregations']['user_name']['buckets'])
+                    except:
+                        try:
+                            return pd.json_normalize(response.json()['aggregations']['user']['buckets'])
+                        except:
+                            return
     
-    
-
     #TODO Add validation logic
     def set_path(self, path):
         #TODO Alert that this resets params
