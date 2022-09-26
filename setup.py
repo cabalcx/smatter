@@ -15,7 +15,7 @@ setup(
     package_data={},
     url='https://github.com/cabalcx/smatter',
     python_requires='>=3.7',
-    install_requires=['requests','pandas'],
+    install_requires=['requests','pandas','matplotlib'],
     extras_require={
         'interactive': ['pandas', 'matplotlib'],
     },
