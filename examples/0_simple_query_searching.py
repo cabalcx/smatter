@@ -1,7 +1,9 @@
 from smatter.api import SMAT
 
+# create API client
 s = SMAT()
 
+# establish a search term
 TERM = 'qanon'
 
 # post content from the TERM
