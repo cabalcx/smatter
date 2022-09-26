@@ -15,7 +15,7 @@ setup(
     package_data={'vxdb': ['py.typed']},
     url='https://github.com/cabalcx/smatter',
     python_requires='>=3.7',
-    install_requires=['requests'],
+    install_requires=['requests','pandas'],
     extras_require={},
     entry_points={'console_scripts': ['vxdb = vxdb.cli:main [cli]']},
     classifiers=[]
